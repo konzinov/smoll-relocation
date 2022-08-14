@@ -1,7 +1,8 @@
 import {InmemoryQuotationRequestRepository} from "../src/infra/adapters/inmemoryQuotationRequestRepository";
 import {RequestQuotation} from "../src/app/usecases/requestQuotation";
 import {QuotationRequest} from "../src/domain/models/quotationRequest";
-import {DeterministicDateProvider} from "../src/app/usecases/deterministicDateProvider";
+import {DeterministicDateProvider} from "../src/infra/adapters/deterministicDateProvider";
+
 
 
 describe("quotation request", () => {
@@ -29,7 +30,6 @@ describe("quotation request", () => {
 
     describe("relocation happening in the past", () => {
         it("should reject quotation request when relocation date is in the past", () => {
-            const quotationRequestRepository: InmemoryQuotationRequestRepository = new InmemoryQuotationRequestRepository()
             const dateProvider: DeterministicDateProvider = new DeterministicDateProvider(new Date(2022, 7, 14))
             const requestQuotation: RequestQuotation = new RequestQuotation(quotationRequestRepository, dateProvider)
             requestQuotation.execute("quotation-request-id", true, new Date(2021, 7, 16))
